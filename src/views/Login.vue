@@ -1,7 +1,7 @@
 <template>
-    <div class="app">
-        <router-view></router-view>
-    </div>
+  <div class="login">
+    login
+  </div>
 </template>
 
 <script setup>

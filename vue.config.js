@@ -4,6 +4,7 @@ const Components = require('unplugin-vue-components/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
 module.exports = defineConfig({
+  lintOnSave: false,  // 关闭ESlint检验
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
