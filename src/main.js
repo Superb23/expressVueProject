@@ -5,7 +5,7 @@ import "./common/base.css"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
-// 全局注册导入的所有图标
+// 全局注册导入的所有111图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
