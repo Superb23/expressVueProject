@@ -9,18 +9,18 @@ const router = createRouter({
     },
     {
       path: "/home",
-      component: () => import("@/views/Home.vue"),
+      component: () => import("@/views/home/home.vue"),
       meta: {
         isAuth: true
       }
     },
     {
       path: "/login",
-      component: () => import("@/views/Login.vue")
+      component: () => import("@/views/login/login.vue")
     },
     {
       path: "/register",
-      component: () => import("@/views/Register.vue")
+      component: () => import("@/views/register/register.vue")
     }
   ]
 })
