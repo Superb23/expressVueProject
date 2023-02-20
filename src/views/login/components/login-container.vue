@@ -75,13 +75,12 @@ const onLogin = () => {
     if (value) {
       // 校验成功
       getLoginData()
-    } else {
-      // 校验失败
     }
   })
 }
 // 登录接口
 const getLoginData = () => {
+  
   localStorage.setItem("token", 1)
   // 消息提示
   ElMessage({
