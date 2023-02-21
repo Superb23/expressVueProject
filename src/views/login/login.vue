@@ -16,7 +16,7 @@ import loginContainer from './components/login-container.vue';
 .login {
   height: 100%;
   .background-picture {
-    background: url("@/assets/background3.jpeg");
+    background: url("@/assets/login-bj2.jpeg");
     width: 100%;
     height: 100%;
     position: fixed;
