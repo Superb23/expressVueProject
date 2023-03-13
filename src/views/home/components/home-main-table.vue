@@ -6,7 +6,7 @@
     >
       <el-table-column prop="courseImg" label="图片">
         <template #default="scope">
-          <img :src="scope.row.courseImg" class="courseImg-img">
+          <img :src="scope.row.course_img" class="courseImg-img">
         </template>
       </el-table-column>
       <el-table-column prop="title" label="标题" />

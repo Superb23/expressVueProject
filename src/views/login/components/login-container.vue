@@ -45,13 +45,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import router from '@/router';
+import { ref, reactive } from 'vue'
+import router from '@/router'
+import { getLogin } from '@/service'
 
 // 获取元素-html实例
 const refForm = ref()
 // 表单数据声明
-const userInfo = ref({
+const userInfo = reactive({
   userName: "",
   password: ""
 })
@@ -74,20 +75,26 @@ const onLogin = () => {
   refForm.value.validate((value) => {
     if (value) {
       // 校验成功
-      getLoginData()
+      fetchLoginData()
     }
   })
 }
 // 登录接口
-const getLoginData = () => {
-  
-  localStorage.setItem("token", 1)
-  // 消息提示
-  ElMessage({
-    message: "登录成功",
-    type: 'success',
+const fetchLoginData = async () => {
+  // 网络请求，后端返回数据
+  const res = await getLogin({
+    userName: userInfo.userName,
+    password: userInfo.password
   })
-  router.push("/home")
+  if (res?.token) {
+    localStorage.setItem("token", res.token)
+    // 消息提示
+    ElMessage({
+      message: "登录成功",
+      type: 'success',
+    })
+    router.push("/home")
+  }
 }
 // 跳转注册
 const goRegister = () => {

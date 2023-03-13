@@ -13,23 +13,50 @@
          @mouseenter="isShowUserinfo(1)"
          @mouseleave="isShowUserinfo(0)"
     >
-      <img src="@/assets/home-title.jpg" alt="">
+      <img :src="userInfo.headImg" alt="">
       <div class="user-info" v-show="isShow">
-        <div>superb</div>
-        <div>退出登录</div>
+        <div>{{ userInfo.name }}</div>
+        <div @click="loginOut">退出登录</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, reactive, defineProps, onMounted } from 'vue'
+import { getUserInfo } from '@/service'
+import router from '@/router';
 
 const { handleCollapse, isCollapse } = defineProps(["handleCollapse", "isCollapse"])
 const isShow = ref(false)
 const isShowUserinfo = (flag) => {
   isShow.value = flag === 1 ? true : false
 }
+
+// 获取用户信息
+const userInfo = reactive({
+  name: "",
+  headImg: ""
+})
+// 网络请求接口
+const fetchUserInfoData = async () => {
+  const res = await getUserInfo()
+  if (res?.data.name && res?.data.headImg) {
+    userInfo.name = res.data.name
+    userInfo.headImg = res.data.headImg
+  }
+}
+// 页面初始化时即接口请求
+onMounted(() => {
+  fetchUserInfoData()
+})
+
+// 退出登录
+const loginOut = () => {
+  router.push("/login")
+  localStorage.removeItem("token")
+}
+
 </script>
 
 <style lang="less" scoped>
@@ -39,12 +66,13 @@ const isShowUserinfo = (flag) => {
   flex-direction: column;
   position: absolute;
   right: 0;
-  bottom: -77px;
+  bottom: -72px;
   background-color: #fff;
   border: 5px;
   box-shadow: 0 4px 8px 0 rgb(7 17 27 / 10%);
   text-align: center;
-
+  cursor: pointer;
+  
   div:hover {
     color: #409eff;
   }

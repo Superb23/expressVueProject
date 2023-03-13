@@ -15,9 +15,9 @@
           <el-icon><Document /></el-icon>
           <span>课程管理</span>
         </template>
-          <el-menu-item index="1-1">前端课程</el-menu-item>
-          <el-menu-item index="1-2">后端课程</el-menu-item>
-          <el-menu-item index="1-3">全栈课程</el-menu-item>
+          <el-menu-item index="1-1" @click="courseHandle('front')">前端课程</el-menu-item>
+          <el-menu-item index="1-2" @click="courseHandle('back')">后端课程</el-menu-item>
+          <el-menu-item index="1-3" @click="courseHandle('all')">全栈课程</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="2">
         <template #title>
@@ -33,9 +33,18 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
 import { defineProps } from 'vue'
+import useCourseStore from '@/stores/modules/course'
 
+const courseStore = useCourseStore()
+const { data, category } = storeToRefs(courseStore)
 const { isCollapse } = defineProps(["isCollapse"])
+
+const courseHandle = (type) => {
+  data.value.page = 1
+  category.value = type
+}
 </script>
 
 <style lang="less" scoped>

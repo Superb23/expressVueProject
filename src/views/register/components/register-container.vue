@@ -65,13 +65,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import router from '@/router';
+import { getRegister } from '@/service'
 
 // 获取元素-html实例
 const refForm = ref()
 // 表单数据声明
-const userInfo = ref({
+const userInfo = reactive({
   userName: "",
   password: "",
   pwdAgain: ""
@@ -101,13 +102,13 @@ const onRegister = () => {
   // 任意表单项校验后触发
   refForm.value.validate((value) => {
     // 判断密码两次输入是否相同
-    const isEqual = userInfo.value.password === userInfo.value.pwdAgain
+    const isEqual = userInfo.password === userInfo.pwdAgain
     if (value) {
       if (!isEqual) {
         // refForm.value.resetFields() // 全部重置:model中绑定的值
         // 手动重置
-        userInfo.value.password = ""
-        userInfo.value.pwdAgain = ""
+        userInfo.password = ""
+        userInfo.pwdAgain = ""
         checkProtocol.value = false
         ElMessage.error("密码确认失败，请重新输入")
       } else {
@@ -115,22 +116,27 @@ const onRegister = () => {
           ElMessage.error("请阅读并同意《xxx协议》")
         } else {
           // 校验成功
-          getRegisterData()
+          fetchRegisterData()
         }
       }
     }
   })
 }
 // 注册接口
-const getRegisterData = () => {
+const fetchRegisterData = async () => {
   // 接口调用
-  
-  // 消息提示
-  ElMessage({
-    message: "注册成功，请前往登录",
-    type: 'success',
+  const res = await getRegister({
+    userName: userInfo.userName,
+    password: userInfo.password
   })
-  router.push("/login")
+  // 注册成功
+  if (res?.code === 0) {
+    ElMessage({
+      message: "注册成功",
+      type: 'success',
+    })
+    router.push("/login")
+  }
 }
 // 跳转登录
 const goLogin = () => {
