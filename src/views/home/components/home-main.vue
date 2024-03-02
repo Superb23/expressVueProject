@@ -1,25 +1,35 @@
 <template>
-  <div class="main">
-    <!-- 搜索框 -->
-    <el-form>
-      <el-form-item>
-        <el-input v-model="inputValue" placeholder="请输入内容"></el-input>
-      </el-form-item>
-      <el-button type="primary" @click="handleClick">搜索</el-button>
-    </el-form>
-    <!--  -->
-    <home-main-table :list="courserList" 
-                     @editClick="editClick"
-                     :deleteHandle="deleteHandle"
+  <!-- 图书管理 -->
+  <template v-if="menuTheme === 1">
+    <div class="main">
+      <!-- 搜索框 -->
+      <el-form>
+        <el-form-item>
+          <el-input v-model="inputValue" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="handleClick">搜索</el-button>
+      </el-form>
+      <home-main-table :list="courserList" 
+                      @editClick="editClick"
+                      :deleteHandle="deleteHandle"
+      />
+      <home-main-pagination :currentChange="currentChange" />
+    </div>
+    <!-- 编辑 -->
+    <home-main-dialog v-if="dialogShow"
+                      :dialogShow="dialogShow" 
+                      :message="courseItemState.message"
+                      :confirmClick="confirmClick"
     />
-    <home-main-pagination :currentChange="currentChange" />
-  </div>
-  <!-- 编辑 -->
-  <home-main-dialog v-if="dialogShow"
-                    :dialogShow="dialogShow" 
-                    :message="courseItemState.message"
-                    :confirmClick="confirmClick"
-  />
+  </template>
+  <!-- 用户管理 -->
+  <template v-else-if="menuTheme === 2">
+    <home-main-table2 />
+  </template>
+  <!-- 员工管理 -->
+  <template v-else-if="menuTheme === 3">
+    <home-main-table3 />
+  </template>
 </template>
 
 <script setup>
@@ -27,13 +37,20 @@ import { reactive, ref, computed, onMounted, watch } from 'vue'
 import homeMainTable from './home-main-table.vue'
 import homeMainDialog from './home-main-dialog.vue'
 import homeMainPagination from './home-main-pagination.vue'
+import homeMainTable2 from './home-main-table2.vue';
+import homeMainTable3 from './home-main-table3.vue';
 import useCourseStore from '@/stores/modules/course'
 import { storeToRefs } from 'pinia'
 import { getCourseChange, getCourseDelete } from '@/service'
 import { ElMessage } from 'element-plus'
+import useCommonStore from "@/stores/modules/common";
+
+const commonStore = useCommonStore();
+const { menuTheme } = storeToRefs(commonStore);// 1课程，2用户
 
 const courseStore = useCourseStore()
 const { data, category } = storeToRefs(courseStore)
+
 
 // 初始化
 onMounted(() => {
@@ -135,7 +152,7 @@ const fetchCourseDelete = async (query) => {
       type: "success"
     })
   }
-  // 当前页数据清空，重置到第一页
+  
   const totalPage = Math.ceil(data.value.total["total"] / 5)
   // 前n-1页删除
   if (data.value.list.length < 5 && data.value.page < totalPage ) {
@@ -145,6 +162,7 @@ const fetchCourseDelete = async (query) => {
     })
   }
   // 第n页删除
+  // 当前页数据清空，重置到第一页
   if (data.value.list.length === 0 && data.value.page > 1) {
     courseStore.fetchCourseListData({
       category: category.value,

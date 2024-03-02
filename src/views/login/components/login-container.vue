@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h1>superb课程管理系统</h1>
+    <h1>图书管理系统</h1>
     <!-- @keyup.enter="onLogin" 监听键盘enter点击 -->
     <el-form class="login-form" 
             :model="userInfo"
@@ -48,12 +48,16 @@
 import { ref, reactive } from 'vue'
 import router from '@/router'
 import { getLogin } from '@/service'
+import useUserStore from '@/stores/modules/user'
+import { storeToRefs } from 'pinia'
 
+const userStore = useUserStore();
+const { power } = storeToRefs(userStore);
 // 获取元素-html实例
 const refForm = ref()
 // 表单数据声明
 const userInfo = reactive({
-  userName: "",
+  userName: "admin",
   password: ""
 })
 // 表单数据校验规则
@@ -69,6 +73,7 @@ const rules = {
     message: "密码不能为空"
   }]
 }
+
 // 登录的方法
 const onLogin = () => {
   // 任意表单项校验后触发
@@ -87,7 +92,9 @@ const fetchLoginData = async () => {
     password: userInfo.password
   })
   if (res?.token) {
-    localStorage.setItem("token", res.token)
+    localStorage.setItem("token", res.token);
+    // localStorage.setItem("power", res?.power); // 保存用户权限
+    power.value = res?.power;
     // 消息提示
     ElMessage({
       message: "登录成功",

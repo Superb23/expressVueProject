@@ -26,6 +26,7 @@
 import { ref, reactive, defineProps, onMounted } from 'vue'
 import { getUserInfo } from '@/service'
 import router from '@/router';
+import { clearStoreCache } from '@/utils/const';
 
 const { handleCollapse, isCollapse } = defineProps(["handleCollapse", "isCollapse"])
 const isShow = ref(false)
@@ -54,7 +55,10 @@ onMounted(() => {
 // 退出登录
 const loginOut = () => {
   router.push("/login")
-  localStorage.removeItem("token")
+  localStorage.removeItem("token");
+  // localStorage.removeItem("power");
+  // 退出登录清除pinia所有store
+  clearStoreCache();
 }
 
 </script>

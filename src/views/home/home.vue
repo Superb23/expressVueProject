@@ -1,14 +1,14 @@
 <template>
   <div class="home">
     <el-container>
-      <el-aside><home-aside :isCollapse="isCollapse" /></el-aside>
+      <el-aside><home-aside :isCollapse="isCollapse" :isShow="isShow"/></el-aside>
       <el-container>
         <el-header>
           <home-header :handleCollapse="handleCollapse"
                        :isCollapse="isCollapse"
           />
         </el-header>
-        <el-main><home-main /></el-main>
+        <el-main><home-main/></el-main>
       </el-container>
     </el-container>
   </div>
@@ -20,7 +20,7 @@ import homeHeader from './components/home-header.vue'
 import homeMain from './components/home-main.vue'
 import { ref } from 'vue';
 
-const isCollapse = ref(false)
+let isCollapse = ref(false)
 const handleCollapse = () => {
   isCollapse.value = !isCollapse.value
 }

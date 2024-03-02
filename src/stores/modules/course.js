@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getCourseList } from "@/service";
+import { pageSize } from '@/utils/const';
 
 const useCourseStore = defineStore("course", {
   state: () => ({
@@ -16,8 +17,8 @@ const useCourseStore = defineStore("course", {
   actions: {
     async fetchCourseListData(query) {
       const category = query?.category || this.category
-      const page = query?.page || 1
-      const size = query?.size || 5
+      const page = query?.page || 1;
+      const size = query?.size || pageSize;
       const res = await getCourseList({
         category,
         page,
