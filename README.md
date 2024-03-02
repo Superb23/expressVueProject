@@ -1,4 +1,4 @@
-# vue_project
+# 前后端全栈-JavaScript
 
 ## Project setup
 ```
