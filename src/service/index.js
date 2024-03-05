@@ -1,6 +1,0 @@
-export * from "./modules/user/register"
-export * from "./modules/user/login"
-export * from "./modules/user/userInfo"
-export * from "./modules/course/courseList"
-export * from "./modules/course/courseChange"
-export * from "./modules/course/courseDelete"

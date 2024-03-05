@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.superb.mapper.ClientMapper">
+    <select id="pageQuery" resultType="com.superb.pojo.entity.Client">
+        select * from client
+        <where>
+            <if test="type != null">
+                type = #{type}
+            </if>
+            and del = 0
+        </where>
+        order by id asc
+    </select>
+
+    <update id="update">
+        update client
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="cardNumber != null">
+                card_number = #{cardNumber},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="books != null">
+                books = #{books},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

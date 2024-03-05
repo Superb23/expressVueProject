@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.superb.mapper.AdminMapper">
+
+    <insert id="insert">
+        insert into user (name, pwd, head_img, power, status, del)
+        values (#{name}, #{pwd}, #{headImg}, #{power}, #{status}, #{del})
+    </insert>
+    
+    <select id="queryCondition" resultType="com.superb.pojo.entity.Admin">
+        select * from user 
+        <where>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="pwd != null">
+                and pwd = #{pwd}
+            </if>
+            <if test="headImg != null">
+                and head_img = #{headImg}
+            </if>
+            <if test="power != null">
+                and power = #{power}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="del != null">
+                and del = #{del}
+            </if>
+        </where>
+    </select>
+
+    <update id="update">
+        update user
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="pwd != null">pwd = #{pwd},</if>
+            <if test="headImg != null">head_img = #{headImg},</if>
+            <if test="power != null">power = #{power},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="del != null">del = #{del},</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
